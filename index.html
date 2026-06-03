@@ -12,9 +12,14 @@
 
     <div class="header">
         NovaMind AI
-        <button onclick="clearChat()">
-            Очистить
-        </button>
+        <button onclick="clearChat()">Очистить</button>
+    </div>
+
+    <div style="padding:10px;background:#1f2937;">
+        <select id="model">
+            <option value="openai/gpt-oss-20b">GPT OSS 20B</option>
+            <option value="deepseek/deepseek-chat-v3-0324">DeepSeek Chat</option>
+        </select>
     </div>
 
     <div id="chat"></div>

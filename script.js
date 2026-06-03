@@ -9,16 +9,13 @@ function scrollBottom(){
 }
 
 function saveChat(){
-    localStorage.setItem(
-        "novamind_chat",
-        chat.innerHTML
-    );
+    localStorage.setItem("novamind_chat",chat.innerHTML);
 }
 
 function loadChat(){
 
     const history =
-        localStorage.getItem("novamind_chat");
+    localStorage.getItem("novamind_chat");
 
     if(history){
         chat.innerHTML = history;
@@ -30,7 +27,10 @@ function loadChat(){
 async function sendMessage(){
 
     const input =
-        document.getElementById("message");
+    document.getElementById("message");
+
+    const model =
+    document.getElementById("model").value;
 
     const text = input.value.trim();
 
@@ -48,41 +48,32 @@ async function sendMessage(){
 
     scrollBottom();
 
-    try{
+    const response = await fetch(
+        API_URL,
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                message:text,
+                model:model
+            })
+        }
+    );
 
-        const response = await fetch(
-            API_URL,
-            {
-                method:"POST",
-                headers:{
-                    "Content-Type":"application/json"
-                },
-                body:JSON.stringify({
-                    message:text
-                })
-            }
-        );
+    const data = await response.json();
 
-        const data = await response.json();
+    document
+    .getElementById("loading")
+    .remove();
 
-        document
-        .getElementById("loading")
-        .remove();
+    chat.innerHTML +=
+    `<div class="ai">${data.reply}</div>`;
 
-        chat.innerHTML +=
-        `<div class="ai">${data.reply}</div>`;
+    saveChat();
 
-        saveChat();
-
-        scrollBottom();
-
-    }catch(error){
-
-        document
-        .getElementById("loading")
-        .innerHTML =
-        "Ошибка подключения";
-    }
+    scrollBottom();
 }
 
 async function clearChat(){
@@ -104,12 +95,11 @@ async function clearChat(){
 document
 .getElementById("message")
 .addEventListener(
-    "keypress",
-    function(event){
+"keypress",
+function(event){
 
-        if(event.key === "Enter"){
-            sendMessage();
-        }
-
+    if(event.key==="Enter"){
+        sendMessage();
     }
-);
+
+});

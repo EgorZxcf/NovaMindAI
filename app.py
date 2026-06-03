@@ -17,6 +17,7 @@ chat_history = [SYSTEM_PROMPT]
 
 class Message(BaseModel):
     message: str
+    model: str
 
 @app.get("/")
 def home():
@@ -56,7 +57,7 @@ def chat(data: Message):
             "Content-Type":"application/json"
         },
         json={
-            "model":"openai/gpt-oss-20b",
+            "model":data.model,
             "messages":chat_history
         },
         timeout=60
@@ -70,8 +71,5 @@ def chat(data: Message):
         "role":"assistant",
         "content":reply
     })
-
-    if len(chat_history) > 20:
-        chat_history = [chat_history[0]] + chat_history[-19:]
 
     return {"reply":reply}
