@@ -213,3 +213,26 @@ document.addEventListener(
 
     }
 );
+
+function updateStats(){
+
+    const count =
+    document.querySelectorAll(
+        ".user,.ai"
+    ).length;
+
+    const stats =
+    document.getElementById(
+        "stats"
+    );
+
+    if(stats){
+        stats.innerText =
+        "Сообщений: " + count;
+    }
+}
+
+setInterval(
+    updateStats,
+    1000
+);
