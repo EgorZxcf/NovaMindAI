@@ -236,3 +236,55 @@ setInterval(
     updateStats,
     1000
 );
+
+function exportChat(){
+
+    let text = "";
+
+    document
+    .querySelectorAll(
+        ".user,.ai"
+    )
+    .forEach(function(msg){
+
+        if(
+            msg.classList.contains(
+                "user"
+            )
+        ){
+            text +=
+            "Пользователь: "
+            + msg.innerText +
+            "\n\n";
+        }else{
+            text +=
+            "NovaMind AI: "
+            + msg.innerText +
+            "\n\n";
+        }
+
+    });
+
+    const blob =
+    new Blob(
+        [text],
+        {
+            type:"text/plain"
+        }
+    );
+
+    const a =
+    document.createElement(
+        "a"
+    );
+
+    a.href =
+    URL.createObjectURL(
+        blob
+    );
+
+    a.download =
+    "NovaMind_Chat.txt";
+
+    a.click();
+}
