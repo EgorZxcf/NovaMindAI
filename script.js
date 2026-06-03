@@ -9,19 +9,42 @@ function scrollBottom(){
 }
 
 function saveChat(){
-    localStorage.setItem("novamind_chat",chat.innerHTML);
+    localStorage.setItem(
+        "novamind_chat",
+        chat.innerHTML
+    );
 }
 
 function loadChat(){
 
     const history =
-    localStorage.getItem("novamind_chat");
+    localStorage.getItem(
+        "novamind_chat"
+    );
 
     if(history){
         chat.innerHTML = history;
     }
 
     scrollBottom();
+}
+
+async function typeText(element,text){
+
+    element.innerHTML = "";
+
+    for(let i=0;i<text.length;i++){
+
+        element.innerHTML += text[i];
+
+        scrollBottom();
+
+        await new Promise(
+            resolve => setTimeout(resolve,10)
+        );
+    }
+
+    saveChat();
 }
 
 async function sendMessage(){
@@ -32,7 +55,8 @@ async function sendMessage(){
     const model =
     document.getElementById("model").value;
 
-    const text = input.value.trim();
+    const text =
+    input.value.trim();
 
     if(!text) return;
 
@@ -43,37 +67,54 @@ async function sendMessage(){
 
     saveChat();
 
+    const aiId =
+    "ai_" + Date.now();
+
     chat.innerHTML +=
-    `<div class="ai" id="loading">● ● ●</div>`;
+    `<div class="ai" id="${aiId}">
+        ● ● ●
+    </div>`;
 
     scrollBottom();
 
-    const response = await fetch(
-        API_URL,
-        {
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                message:text,
-                model:model
-            })
-        }
-    );
+    try{
 
-    const data = await response.json();
+        const response =
+        await fetch(
+            API_URL,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+                body:JSON.stringify({
+                    message:text,
+                    model:model
+                })
+            }
+        );
 
-    document
-    .getElementById("loading")
-    .remove();
+        const data =
+        await response.json();
 
-    chat.innerHTML +=
-    `<div class="ai">${data.reply}</div>`;
+        const aiDiv =
+        document.getElementById(aiId);
 
-    saveChat();
+        await typeText(
+            aiDiv,
+            data.reply
+        );
 
-    scrollBottom();
+    }catch(error){
+
+        document
+        .getElementById(aiId)
+        .innerHTML =
+        "Ошибка подключения";
+
+        console.log(error);
+    }
 }
 
 async function clearChat(){
@@ -95,11 +136,12 @@ async function clearChat(){
 document
 .getElementById("message")
 .addEventListener(
-"keypress",
-function(event){
+    "keypress",
+    function(event){
 
-    if(event.key==="Enter"){
-        sendMessage();
+        if(event.key==="Enter"){
+            sendMessage();
+        }
+
     }
-
-});
+);
