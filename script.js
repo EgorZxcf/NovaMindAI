@@ -4,74 +4,92 @@ const chat = document.getElementById("chat");
 
 loadChat();
 
+function scrollBottom(){
+    chat.scrollTop = chat.scrollHeight;
+}
+
 function saveChat(){
-    localStorage.setItem("novamind_chat", chat.innerHTML);
+    localStorage.setItem(
+        "novamind_chat",
+        chat.innerHTML
+    );
 }
 
 function loadChat(){
-    const history = localStorage.getItem("novamind_chat");
+
+    const history =
+        localStorage.getItem("novamind_chat");
 
     if(history){
         chat.innerHTML = history;
     }
+
+    scrollBottom();
 }
 
 async function sendMessage(){
 
-    const input = document.getElementById("message");
+    const input =
+        document.getElementById("message");
 
     const text = input.value.trim();
 
     if(!text) return;
 
-    chat.innerHTML += `
-        <div class="user">${text}</div>
-    `;
+    chat.innerHTML +=
+    `<div class="user">${text}</div>`;
 
     input.value = "";
 
     saveChat();
 
-    chat.innerHTML += `
-        <div class="ai" id="loading">
-            ● ● ●
-        </div>
-    `;
+    chat.innerHTML +=
+    `<div class="ai" id="loading">● ● ●</div>`;
+
+    scrollBottom();
 
     try{
 
-        const response = await fetch(API_URL,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                message:text
-            })
-        });
+        const response = await fetch(
+            API_URL,
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    message:text
+                })
+            }
+        );
 
         const data = await response.json();
 
-        document.getElementById("loading").remove();
+        document
+        .getElementById("loading")
+        .remove();
 
-        chat.innerHTML += `
-            <div class="ai">${data.reply}</div>
-        `;
+        chat.innerHTML +=
+        `<div class="ai">${data.reply}</div>`;
 
         saveChat();
 
-        chat.scrollTop = chat.scrollHeight;
+        scrollBottom();
 
     }catch(error){
 
-        document.getElementById("loading").innerHTML =
+        document
+        .getElementById("loading")
+        .innerHTML =
         "Ошибка подключения";
     }
 }
 
 async function clearChat(){
 
-    localStorage.removeItem("novamind_chat");
+    localStorage.removeItem(
+        "novamind_chat"
+    );
 
     chat.innerHTML = "";
 
@@ -85,10 +103,13 @@ async function clearChat(){
 
 document
 .getElementById("message")
-.addEventListener("keypress",function(event){
+.addEventListener(
+    "keypress",
+    function(event){
 
-    if(event.key === "Enter"){
-        sendMessage();
+        if(event.key === "Enter"){
+            sendMessage();
+        }
+
     }
-
-});
+);
