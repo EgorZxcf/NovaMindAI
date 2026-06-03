@@ -8,6 +8,13 @@ app = FastAPI()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 
+chat_history = [
+    {
+        "role": "system",
+        "content": "Ты NovaMind AI, полезный и умный ИИ-помощник."
+    }
+]
+
 class Message(BaseModel):
     message: str
 
@@ -26,6 +33,13 @@ def script():
 @app.post("/chat")
 def chat(data: Message):
 
+    global chat_history
+
+    chat_history.append({
+        "role": "user",
+        "content": data.message
+    })
+
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
@@ -33,12 +47,7 @@ def chat(data: Message):
 
     payload = {
         "model": "openai/gpt-oss-20b",
-        "messages": [
-            {
-                "role": "user",
-                "content": data.message
-            }
-        ]
+        "messages": chat_history
     }
 
     response = requests.post(
@@ -52,4 +61,14 @@ def chat(data: Message):
 
     reply = result["choices"][0]["message"]["content"]
 
-    return {"reply": reply}
+    chat_history.append({
+        "role": "assistant",
+        "content": reply
+    })
+
+    if len(chat_history) > 20:
+        chat_history = [chat_history[0]] + chat_history[-19:]
+
+    return {
+        "reply": reply
+    }
