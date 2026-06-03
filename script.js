@@ -29,24 +29,6 @@ function loadChat(){
     scrollBottom();
 }
 
-async function typeText(element,text){
-
-    element.innerHTML = "";
-
-    for(let i=0;i<text.length;i++){
-
-        element.innerHTML += text[i];
-
-        scrollBottom();
-
-        await new Promise(
-            resolve => setTimeout(resolve,10)
-        );
-    }
-
-    saveChat();
-}
-
 async function sendMessage(){
 
     const input =
@@ -60,8 +42,16 @@ async function sendMessage(){
 
     if(!text) return;
 
-    chat.innerHTML +=
-    `<div class="user">${text}</div>`;
+    chat.innerHTML += `
+    <div class="message">
+        <div class="avatar user-avatar">
+            👤
+        </div>
+        <div class="user">
+            ${text}
+        </div>
+    </div>
+    `;
 
     input.value = "";
 
@@ -70,10 +60,16 @@ async function sendMessage(){
     const aiId =
     "ai_" + Date.now();
 
-    chat.innerHTML +=
-    `<div class="ai" id="${aiId}">
-        ● ● ●
-    </div>`;
+    chat.innerHTML += `
+    <div class="message">
+        <div class="avatar ai-avatar">
+            🤖
+        </div>
+        <div class="ai" id="${aiId}">
+            ● ● ●
+        </div>
+    </div>
+    `;
 
     scrollBottom();
 
@@ -98,13 +94,14 @@ async function sendMessage(){
         const data =
         await response.json();
 
-        const aiDiv =
-        document.getElementById(aiId);
+        document
+        .getElementById(aiId)
+        .innerHTML =
+        data.reply;
 
-        await typeText(
-            aiDiv,
-            data.reply
-        );
+        saveChat();
+
+        scrollBottom();
 
     }catch(error){
 
@@ -112,264 +109,17 @@ async function sendMessage(){
         .getElementById(aiId)
         .innerHTML =
         "Ошибка подключения";
-
-        console.log(error);
     }
-}
-
-async function clearChat(){
-
-    localStorage.removeItem(
-        "novamind_chat"
-    );
-
-    chat.innerHTML = "";
-
-    await fetch(
-        "https://novamindai-q6q6.onrender.com/new_chat",
-        {
-            method:"POST"
-        }
-    );
 }
 
 document
 .getElementById("message")
 .addEventListener(
-    "keypress",
-    function(event){
+"keypress",
+function(event){
 
-        if(event.key==="Enter"){
-            sendMessage();
-        }
-
-    }
-);
-
-function toggleTheme(){
-
-    document.body.classList.toggle(
-        "light"
-    );
-
-    localStorage.setItem(
-        "novamind_theme",
-        document.body.classList.contains(
-            "light"
-        )
-    );
-}
-
-if(
-    localStorage.getItem(
-        "novamind_theme"
-    ) === "true"
-){
-    document.body.classList.add(
-        "light"
-    );
-}
-
-function showToast(text){
-
-    const toast =
-    document.createElement("div");
-
-    toast.className =
-    "copy-toast";
-
-    toast.innerText = text;
-
-    document.body.appendChild(
-        toast
-    );
-
-    setTimeout(
-        ()=>{
-            toast.remove();
-        },
-        2000
-    );
-}
-
-document.addEventListener(
-    "click",
-    async function(event){
-
-        if(
-            event.target.classList.contains(
-                "ai"
-            )
-        ){
-
-            await navigator.clipboard.writeText(
-                event.target.innerText
-            );
-
-            showToast(
-                "Ответ скопирован"
-            );
-        }
-
-    }
-);
-
-function updateStats(){
-
-    const count =
-    document.querySelectorAll(
-        ".user,.ai"
-    ).length;
-
-    const stats =
-    document.getElementById(
-        "stats"
-    );
-
-    if(stats){
-        stats.innerText =
-        "Сообщений: " + count;
-    }
-}
-
-setInterval(
-    updateStats,
-    1000
-);
-
-function exportChat(){
-
-    let text = "";
-
-    document
-    .querySelectorAll(
-        ".user,.ai"
-    )
-    .forEach(function(msg){
-
-        if(
-            msg.classList.contains(
-                "user"
-            )
-        ){
-            text +=
-            "Пользователь: "
-            + msg.innerText +
-            "\n\n";
-        }else{
-            text +=
-            "NovaMind AI: "
-            + msg.innerText +
-            "\n\n";
-        }
-
-    });
-
-    const blob =
-    new Blob(
-        [text],
-        {
-            type:"text/plain"
-        }
-    );
-
-    const a =
-    document.createElement(
-        "a"
-    );
-
-    a.href =
-    URL.createObjectURL(
-        blob
-    );
-
-    a.download =
-    "NovaMind_Chat.txt";
-
-    a.click();
-}
-
-function startVoice(){
-
-    if(
-        !(
-            "webkitSpeechRecognition"
-            in window
-        )
-    ){
-        showToast(
-            "Голосовой ввод не поддерживается"
-        );
-        return;
+    if(event.key==="Enter"){
+        sendMessage();
     }
 
-    const recognition =
-    new webkitSpeechRecognition();
-
-    recognition.lang =
-    "ru-RU";
-
-    recognition.start();
-
-    recognition.onresult =
-    function(event){
-
-        document
-        .getElementById(
-            "message"
-        )
-        .value =
-        event.results[0][0].transcript;
-    };
-}
-
-function pickImage(){
-
-    document
-    .getElementById(
-        "imageInput"
-    )
-    .click();
-}
-
-document
-.getElementById(
-    "imageInput"
-)
-.addEventListener(
-    "change",
-    function(event){
-
-        const file =
-        event.target.files[0];
-
-        if(!file) return;
-
-        const reader =
-        new FileReader();
-
-        reader.onload =
-        function(e){
-
-            chat.innerHTML +=
-            `
-            <div class="user">
-                <img
-                src="${e.target.result}"
-                style="
-                max-width:200px;
-                border-radius:10px;
-                ">
-            </div>
-            `;
-
-            saveChat();
-
-            scrollBottom();
-        };
-
-        reader.readAsDataURL(
-            file
-        );
-    }
-);
+});
