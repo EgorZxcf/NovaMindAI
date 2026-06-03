@@ -1,9 +1,24 @@
 const API_URL = "https://novamindai-q6q6.onrender.com/chat";
 
+const chat = document.getElementById("chat");
+
+loadChat();
+
+function saveChat(){
+    localStorage.setItem("novamind_chat", chat.innerHTML);
+}
+
+function loadChat(){
+    const history = localStorage.getItem("novamind_chat");
+
+    if(history){
+        chat.innerHTML = history;
+    }
+}
+
 async function sendMessage(){
 
     const input = document.getElementById("message");
-    const chat = document.getElementById("chat");
 
     const text = input.value.trim();
 
@@ -15,11 +30,15 @@ async function sendMessage(){
 
     input.value = "";
 
+    saveChat();
+
     chat.innerHTML += `
         <div class="ai" id="loading">
-            Думаю...
+            ● ● ●
         </div>
     `;
+
+    chat.scrollTop = chat.scrollHeight;
 
     try{
 
@@ -43,6 +62,8 @@ async function sendMessage(){
             </div>
         `;
 
+        saveChat();
+
         chat.scrollTop = chat.scrollHeight;
 
     }catch(error){
@@ -52,4 +73,22 @@ async function sendMessage(){
 
         console.log(error);
     }
+}
+
+document
+.getElementById("message")
+.addEventListener("keypress", function(event){
+
+    if(event.key === "Enter"){
+        sendMessage();
+    }
+
+});
+
+function clearChat(){
+
+    localStorage.removeItem("novamind_chat");
+
+    chat.innerHTML = "";
+
 }
