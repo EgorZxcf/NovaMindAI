@@ -35,7 +35,9 @@ function loadChat(){
 function updateStats(){
 
     const stats =
-    document.getElementById("stats");
+    document.getElementById(
+        "stats"
+    );
 
     if(stats){
 
@@ -47,38 +49,49 @@ function updateStats(){
     }
 }
 
-async function sendMessage(){
+async function sendMessage(customText = null){
 
     const input =
-    document.getElementById("message");
+    document.getElementById(
+        "message"
+    );
 
     const model =
-    document.getElementById("model").value;
+    document.getElementById(
+        "model"
+    ).value;
 
     const text =
-    input.value.trim();
+    customText || input.value.trim();
 
     if(!text) return;
 
     lastUserMessage = text;
 
-    chat.innerHTML += `
-    <div class="message">
-        <div class="avatar user-avatar">👤</div>
-        <div class="user">${text}</div>
-    </div>
-    `;
+    if(!customText){
+
+        chat.innerHTML += `
+        <div class="message">
+            <div class="avatar user-avatar">
+                👤
+            </div>
+            <div class="user">
+                ${text}
+            </div>
+        </div>
+        `;
+    }
 
     input.value = "";
-
-    saveChat();
 
     const aiId =
     "ai_" + Date.now();
 
     chat.innerHTML += `
     <div class="message">
-        <div class="avatar ai-avatar">🤖</div>
+        <div class="avatar ai-avatar">
+            🤖
+        </div>
         <div class="ai" id="${aiId}">
             ● ● ●
         </div>
@@ -95,7 +108,8 @@ async function sendMessage(){
             {
                 method:"POST",
                 headers:{
-                    "Content-Type":"application/json"
+                    "Content-Type":
+                    "application/json"
                 },
                 body:JSON.stringify({
                     message:text,
@@ -125,11 +139,23 @@ async function sendMessage(){
     }
 }
 
+function regenerateResponse(){
+
+    if(lastUserMessage){
+        sendMessage(
+            lastUserMessage
+        );
+    }
+}
+
 function editLastMessage(){
 
     if(lastUserMessage){
+
         document
-        .getElementById("message")
+        .getElementById(
+            "message"
+        )
         .value =
         lastUserMessage;
     }
@@ -183,19 +209,56 @@ function exportChat(){
     const blob =
     new Blob(
         [text],
-        {type:"text/plain"}
+        {
+            type:"text/plain"
+        }
     );
 
     const a =
-    document.createElement("a");
+    document.createElement(
+        "a"
+    );
 
     a.href =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+        blob
+    );
 
     a.download =
     "NovaMind_Chat.txt";
 
     a.click();
+}
+
+function searchChat(){
+
+    const text =
+    prompt(
+        "Поиск по чату:"
+    );
+
+    if(!text) return;
+
+    document
+    .querySelectorAll(
+        ".user,.ai"
+    )
+    .forEach(function(msg){
+
+        msg.style.border =
+        "none";
+
+        if(
+            msg.innerText
+            .toLowerCase()
+            .includes(
+                text.toLowerCase()
+            )
+        ){
+            msg.style.border =
+            "2px solid gold";
+        }
+    });
 }
 
 function toggleTheme(){
@@ -238,17 +301,6 @@ function startVoice(){
     );
 }
 
-document
-.getElementById("message")
-.addEventListener(
-"keypress",
-function(event){
-
-    if(event.key==="Enter"){
-        sendMessage();
-    }
-});
-
 const modelSelect =
 document.getElementById(
     "model"
@@ -272,41 +324,19 @@ modelSelect.addEventListener(
             "novamind_model",
             this.value
         );
-
     }
 );
 
-function searchChat(){
+document
+.getElementById(
+    "message"
+)
+.addEventListener(
+    "keypress",
+    function(event){
 
-    const text =
-    prompt(
-        "Поиск по чату:"
-    );
-
-    if(!text) return;
-
-    const messages =
-    document.querySelectorAll(
-        ".user,.ai"
-    );
-
-    messages.forEach(
-        function(msg){
-
-            msg.style.border =
-            "none";
-
-            if(
-                msg.innerText
-                .toLowerCase()
-                .includes(
-                    text.toLowerCase()
-                )
-            ){
-                msg.style.border =
-                "2px solid gold";
-            }
-
+        if(event.key==="Enter"){
+            sendMessage();
         }
-    );
-}
+    }
+);
