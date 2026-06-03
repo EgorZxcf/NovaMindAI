@@ -414,3 +414,87 @@ window.addEventListener(
     "load",
     loadPinned
 );
+
+document
+.getElementById(
+    "imageInput"
+)
+.addEventListener(
+    "change",
+    async function(){
+
+        const file =
+        this.files[0];
+
+        if(!file) return;
+
+        const formData =
+        new FormData();
+
+        formData.append(
+            "image",
+            file
+        );
+
+        formData.append(
+            "question",
+            "Что изображено на картинке?"
+        );
+
+        chat.innerHTML += `
+        <div class="message">
+            <div class="avatar user-avatar">
+                📷
+            </div>
+            <div class="user">
+                Анализ изображения...
+            </div>
+        </div>
+        `;
+
+        const aiId =
+        "img_" + Date.now();
+
+        chat.innerHTML += `
+        <div class="message">
+            <div class="avatar ai-avatar">
+                🤖
+            </div>
+            <div class="ai" id="${aiId}">
+                Анализирую...
+            </div>
+        </div>
+        `;
+
+        try{
+
+            const response =
+            await fetch(
+                "/analyze_image",
+                {
+                    method:"POST",
+                    body:formData
+                }
+            );
+
+            const data =
+            await response.json();
+
+            document
+            .getElementById(aiId)
+            .innerHTML =
+            data.reply;
+
+        }catch(error){
+
+            document
+            .getElementById(aiId)
+            .innerHTML =
+            "Ошибка анализа";
+        }
+
+        saveChat();
+
+        scrollBottom();
+    }
+);
