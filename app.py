@@ -1,6 +1,7 @@
 import os
 import requests
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -12,7 +13,15 @@ class Message(BaseModel):
 
 @app.get("/")
 def home():
-    return {"status": "NovaMind AI Online"}
+    return FileResponse("index.html")
+
+@app.get("/style.css")
+def style():
+    return FileResponse("style.css")
+
+@app.get("/script.js")
+def script():
+    return FileResponse("script.js")
 
 @app.post("/chat")
 def chat(data: Message):
