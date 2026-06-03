@@ -14,19 +14,9 @@
     NovaMind AI
 
     <div>
-
-        <button onclick="toggleTheme()">
-            Тема
-        </button>
-
-        <button onclick="exportChat()">
-            TXT
-        </button>
-
-        <button onclick="clearChat()">
-            Очистить
-        </button>
-
+        <button onclick="toggleTheme()">Тема</button>
+        <button onclick="exportChat()">TXT</button>
+        <button onclick="clearChat()">Очистить</button>
     </div>
 
 </div>
@@ -53,6 +43,10 @@ type="text"
 id="message"
 placeholder="Напишите сообщение..."
 >
+
+<button onclick="startVoice()">
+🎤
+</button>
 
 <button onclick="sendMessage()">
 Отправить

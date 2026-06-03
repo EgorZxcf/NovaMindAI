@@ -288,3 +288,37 @@ function exportChat(){
 
     a.click();
 }
+
+function startVoice(){
+
+    if(
+        !(
+            "webkitSpeechRecognition"
+            in window
+        )
+    ){
+        showToast(
+            "Голосовой ввод не поддерживается"
+        );
+        return;
+    }
+
+    const recognition =
+    new webkitSpeechRecognition();
+
+    recognition.lang =
+    "ru-RU";
+
+    recognition.start();
+
+    recognition.onresult =
+    function(event){
+
+        document
+        .getElementById(
+            "message"
+        )
+        .value =
+        event.results[0][0].transcript;
+    };
+}
