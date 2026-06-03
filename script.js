@@ -38,8 +38,6 @@ async function sendMessage(){
         </div>
     `;
 
-    chat.scrollTop = chat.scrollHeight;
-
     try{
 
         const response = await fetch(API_URL,{
@@ -57,9 +55,7 @@ async function sendMessage(){
         document.getElementById("loading").remove();
 
         chat.innerHTML += `
-            <div class="ai">
-                ${data.reply}
-            </div>
+            <div class="ai">${data.reply}</div>
         `;
 
         saveChat();
@@ -69,26 +65,30 @@ async function sendMessage(){
     }catch(error){
 
         document.getElementById("loading").innerHTML =
-            "Ошибка подключения";
-
-        console.log(error);
+        "Ошибка подключения";
     }
+}
+
+async function clearChat(){
+
+    localStorage.removeItem("novamind_chat");
+
+    chat.innerHTML = "";
+
+    await fetch(
+        "https://novamindai-q6q6.onrender.com/new_chat",
+        {
+            method:"POST"
+        }
+    );
 }
 
 document
 .getElementById("message")
-.addEventListener("keypress", function(event){
+.addEventListener("keypress",function(event){
 
     if(event.key === "Enter"){
         sendMessage();
     }
 
 });
-
-function clearChat(){
-
-    localStorage.removeItem("novamind_chat");
-
-    chat.innerHTML = "";
-
-}

@@ -8,12 +8,12 @@ app = FastAPI()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 
-chat_history = [
-    {
-        "role": "system",
-        "content": "Ты NovaMind AI, полезный и умный ИИ-помощник."
-    }
-]
+SYSTEM_PROMPT = {
+    "role": "system",
+    "content": "Ты NovaMind AI, полезный и умный ИИ-помощник."
+}
+
+chat_history = [SYSTEM_PROMPT]
 
 class Message(BaseModel):
     message: str
@@ -30,30 +30,35 @@ def style():
 def script():
     return FileResponse("script.js")
 
+@app.post("/new_chat")
+def new_chat():
+
+    global chat_history
+
+    chat_history = [SYSTEM_PROMPT]
+
+    return {"status":"ok"}
+
 @app.post("/chat")
 def chat(data: Message):
 
     global chat_history
 
     chat_history.append({
-        "role": "user",
-        "content": data.message
+        "role":"user",
+        "content":data.message
     })
-
-    headers = {
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "model": "openai/gpt-oss-20b",
-        "messages": chat_history
-    }
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
-        headers=headers,
-        json=payload,
+        headers={
+            "Authorization":f"Bearer {API_KEY}",
+            "Content-Type":"application/json"
+        },
+        json={
+            "model":"openai/gpt-oss-20b",
+            "messages":chat_history
+        },
         timeout=60
     )
 
@@ -62,13 +67,11 @@ def chat(data: Message):
     reply = result["choices"][0]["message"]["content"]
 
     chat_history.append({
-        "role": "assistant",
-        "content": reply
+        "role":"assistant",
+        "content":reply
     })
 
     if len(chat_history) > 20:
         chat_history = [chat_history[0]] + chat_history[-19:]
 
-    return {
-        "reply": reply
-    }
+    return {"reply":reply}
