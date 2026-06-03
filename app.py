@@ -52,6 +52,11 @@ async def chat(request: Request):
 
     result = response.json()
 
+    if "choices" not in result:
+        return {
+            "reply": f"OpenRouter Error: {result}"
+        }
+
     return {
         "reply":
         result["choices"][0]["message"]["content"]
@@ -102,6 +107,11 @@ async def analyze_image(
     )
 
     result = response.json()
+
+    if "choices" not in result:
+        return {
+            "reply": f"OpenRouter Error: {result}"
+        }
 
     return {
         "reply":
