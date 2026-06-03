@@ -2,6 +2,8 @@ const API_URL = "https://novamindai-q6q6.onrender.com/chat";
 
 const chat = document.getElementById("chat");
 
+let lastUserMessage = "";
+
 loadChat();
 
 function scrollBottom(){
@@ -41,6 +43,8 @@ async function sendMessage(){
     input.value.trim();
 
     if(!text) return;
+
+    lastUserMessage = text;
 
     chat.innerHTML += `
     <div class="message">
@@ -109,6 +113,20 @@ async function sendMessage(){
         .getElementById(aiId)
         .innerHTML =
         "Ошибка подключения";
+    }
+}
+
+function editLastMessage(){
+
+    if(
+        lastUserMessage.length > 0
+    ){
+        document
+        .getElementById(
+            "message"
+        )
+        .value =
+        lastUserMessage;
     }
 }
 

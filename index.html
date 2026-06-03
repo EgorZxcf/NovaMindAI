@@ -16,6 +16,7 @@
     <div>
         <button onclick="toggleTheme()">Тема</button>
         <button onclick="exportChat()">TXT</button>
+        <button onclick="editLastMessage()">Изменить</button>
         <button onclick="clearChat()">Очистить</button>
     </div>
 
@@ -45,9 +46,7 @@ accept="image/*"
 style="display:none"
 >
 
-<button onclick="pickImage()">
-📷
-</button>
+<button onclick="pickImage()">📷</button>
 
 <input
 type="text"
@@ -55,13 +54,9 @@ id="message"
 placeholder="Напишите сообщение..."
 >
 
-<button onclick="startVoice()">
-🎤
-</button>
+<button onclick="startVoice()">🎤</button>
 
-<button onclick="sendMessage()">
-Отправить
-</button>
+<button onclick="sendMessage()">Отправить</button>
 
 </div>
 
