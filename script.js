@@ -248,3 +248,65 @@ function(event){
         sendMessage();
     }
 });
+
+const modelSelect =
+document.getElementById(
+    "model"
+);
+
+const savedModel =
+localStorage.getItem(
+    "novamind_model"
+);
+
+if(savedModel){
+    modelSelect.value =
+    savedModel;
+}
+
+modelSelect.addEventListener(
+    "change",
+    function(){
+
+        localStorage.setItem(
+            "novamind_model",
+            this.value
+        );
+
+    }
+);
+
+function searchChat(){
+
+    const text =
+    prompt(
+        "Поиск по чату:"
+    );
+
+    if(!text) return;
+
+    const messages =
+    document.querySelectorAll(
+        ".user,.ai"
+    );
+
+    messages.forEach(
+        function(msg){
+
+            msg.style.border =
+            "none";
+
+            if(
+                msg.innerText
+                .toLowerCase()
+                .includes(
+                    text.toLowerCase()
+                )
+            ){
+                msg.style.border =
+                "2px solid gold";
+            }
+
+        }
+    );
+}
