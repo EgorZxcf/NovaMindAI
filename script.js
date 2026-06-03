@@ -169,3 +169,47 @@ if(
         "light"
     );
 }
+
+function showToast(text){
+
+    const toast =
+    document.createElement("div");
+
+    toast.className =
+    "copy-toast";
+
+    toast.innerText = text;
+
+    document.body.appendChild(
+        toast
+    );
+
+    setTimeout(
+        ()=>{
+            toast.remove();
+        },
+        2000
+    );
+}
+
+document.addEventListener(
+    "click",
+    async function(event){
+
+        if(
+            event.target.classList.contains(
+                "ai"
+            )
+        ){
+
+            await navigator.clipboard.writeText(
+                event.target.innerText
+            );
+
+            showToast(
+                "Ответ скопирован"
+            );
+        }
+
+    }
+);
