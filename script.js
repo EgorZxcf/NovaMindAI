@@ -340,3 +340,77 @@ document
         }
     }
 );
+
+function pinMessage(){
+
+    const messages =
+    document.querySelectorAll(
+        ".message"
+    );
+
+    if(!messages.length) return;
+
+    const last =
+    messages[
+        messages.length - 1
+    ];
+
+    const clone =
+    last.cloneNode(true);
+
+    const pinned =
+    document.getElementById(
+        "pinnedMessages"
+    );
+
+    pinned.appendChild(
+        clone
+    );
+
+    localStorage.setItem(
+        "novamind_pinned",
+        pinned.innerHTML
+    );
+}
+
+function loadPinned(){
+
+    const pinned =
+    document.getElementById(
+        "pinnedMessages"
+    );
+
+    const saved =
+    localStorage.getItem(
+        "novamind_pinned"
+    );
+
+    if(saved){
+        pinned.innerHTML =
+        saved;
+    }
+}
+
+function toggleSettings(){
+
+    const panel =
+    document.getElementById(
+        "settingsPanel"
+    );
+
+    if(
+        panel.style.display ===
+        "block"
+    ){
+        panel.style.display =
+        "none";
+    }else{
+        panel.style.display =
+        "block";
+    }
+}
+
+window.addEventListener(
+    "load",
+    loadPinned
+);
