@@ -322,3 +322,54 @@ function startVoice(){
         event.results[0][0].transcript;
     };
 }
+
+function pickImage(){
+
+    document
+    .getElementById(
+        "imageInput"
+    )
+    .click();
+}
+
+document
+.getElementById(
+    "imageInput"
+)
+.addEventListener(
+    "change",
+    function(event){
+
+        const file =
+        event.target.files[0];
+
+        if(!file) return;
+
+        const reader =
+        new FileReader();
+
+        reader.onload =
+        function(e){
+
+            chat.innerHTML +=
+            `
+            <div class="user">
+                <img
+                src="${e.target.result}"
+                style="
+                max-width:200px;
+                border-radius:10px;
+                ">
+            </div>
+            `;
+
+            saveChat();
+
+            scrollBottom();
+        };
+
+        reader.readAsDataURL(
+            file
+        );
+    }
+);
