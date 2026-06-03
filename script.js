@@ -145,3 +145,27 @@ document
 
     }
 );
+
+function toggleTheme(){
+
+    document.body.classList.toggle(
+        "light"
+    );
+
+    localStorage.setItem(
+        "novamind_theme",
+        document.body.classList.contains(
+            "light"
+        )
+    );
+}
+
+if(
+    localStorage.getItem(
+        "novamind_theme"
+    ) === "true"
+){
+    document.body.classList.add(
+        "light"
+    );
+}
