@@ -11,45 +11,12 @@
 <div class="chat-container">
 
 <div class="header">
-
 NovaMind AI
-
-<div>
-
-<button onclick="toggleTheme()">Тема</button>
-<button onclick="toggleSettings()">⚙️</button>
-<button onclick="searchChat()">Поиск</button>
-<button onclick="regenerateResponse()">Повторить</button>
-<button onclick="pinMessage()">📌</button>
-<button onclick="exportChat()">TXT</button>
-<button onclick="editLastMessage()">Изменить</button>
-<button onclick="deleteLastMessage()">Удалить</button>
-<button onclick="clearChat()">Очистить</button>
-
 </div>
 
-</div>
-
-<div id="settingsPanel" style="display:none;padding:10px;background:var(--header);">
-<b>Настройки NovaMind AI</b>
-<br><br>
-Версия: 2.0
-</div>
+<div id="settingsPanel"></div>
 
 <div id="pinnedMessages"></div>
-
-<div style="padding:10px;background:var(--header);">
-
-<select id="model">
-<option value="openai/gpt-oss-20b">GPT OSS 20B</option>
-<option value="deepseek/deepseek-chat-v3-0324">DeepSeek</option>
-</select>
-
-<div id="stats">
-Сообщений: 0
-</div>
-
-</div>
 
 <div id="chat"></div>
 
@@ -64,14 +31,12 @@ accept="image/*"
 <input
 type="text"
 id="message"
-placeholder="Напишите сообщение..."
+placeholder="Введите сообщение или вопрос по фото..."
 >
 
 <button onclick="sendMessage()">
 Отправить
 </button>
-
-</div>
 
 </div>
 
