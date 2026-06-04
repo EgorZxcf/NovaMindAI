@@ -1,6 +1,13 @@
 import os
 import base64
 import requests
+import json
+
+try:
+    with open("memory.json", "r") as f:
+        chat_memory = json.load(f)
+except:
+    chat_memory = []
 
 from fastapi import FastAPI, UploadFile, File, Form, Request
 from fastapi.responses import FileResponse
@@ -8,7 +15,6 @@ from fastapi.responses import FileResponse
 app = FastAPI()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
-chat_memory = []
 
 @app.get("/")
 def home():
@@ -82,6 +88,13 @@ async def chat(request: Request):
     })
 
     chat_memory[:] = chat_memory[-20:]
+    with open("memory.json", "w") as f:
+        json.dump(
+            chat_memory,
+            f,
+            ensure_ascii=False,
+            indent=2
+        )
 
     return {
         "reply": ai_reply
