@@ -40,6 +40,7 @@ async def chat(request: Request):
         },
         json={
             "model": model,
+              "max_tokens": 1000,
             "messages": [
                 {
                     "role": "user",
