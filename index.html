@@ -11,41 +11,50 @@
 <div class="chat-container">
 
 <div class="header">
-    NovaMind AI
 
-    <button onclick="toggleTheme()">Тема</button>
+<div class="header-title">
+🧠 NovaMind AI
+</div>
 
-    <button onclick="toggleSettings()">⚙</button>
+<button onclick="toggleSettings()">
+⚙
+</button>
 
-    <button onclick="searchChat()">Поиск</button>
+</div>
 
-    <button onclick="regenerateResponse()">Повторить</button>
+<div id="settingsPanel" style="display:none;">
 
-    <button onclick="pinMessage()">📌</button>
+<button onclick="toggleTheme()">🌙 Тема</button>
 
-    <button onclick="exportChat()">TXT</button>
+<button onclick="searchChat()">🔍 Поиск</button>
 
-    <button onclick="editLastMessage()">Изменить</button>
+<button onclick="regenerateResponse()">🔄 Повторить</button>
 
-    <button onclick="deleteLastMessage()">Удалить</button>
+<button onclick="pinMessage()">📌 Закрепить</button>
 
-    <button onclick="clearChat()">Очистить</button>
+<button onclick="exportChat()">📄 TXT</button>
+
+<button onclick="editLastMessage()">✏️ Изменить</button>
+
+<button onclick="deleteLastMessage()">🗑 Удалить</button>
+
+<button onclick="clearChat()">🧹 Очистить</button>
+
 </div>
 
 <select id="model">
-    <option value="openai/gpt-oss-20b">
-        GPT OSS 20B
-    </option>
-    <option value="google/gemini-2.5-flash">
-        Gemini 2.5 Flash
-    </option>
+<option value="openai/gpt-oss-20b">
+GPT OSS 20B
+</option>
+
+<option value="google/gemini-2.5-flash">
+Gemini 2.5 Flash
+</option>
 </select>
 
 <div id="stats">
 Сообщений: 0
 </div>
-
-<div id="settingsPanel"></div>
 
 <div id="pinnedMessages"></div>
 
@@ -57,7 +66,12 @@
 type="file"
 id="imageInput"
 accept="image/*"
+hidden
 >
+
+<button onclick="pickImage()">
+📎
+</button>
 
 <input
 type="text"
@@ -66,7 +80,7 @@ placeholder="Введите сообщение..."
 >
 
 <button onclick="sendMessage()">
-Отправить
+➤
 </button>
 
 </div>

@@ -93,7 +93,11 @@ async function sendMessage(customText = null){
             🤖
         </div>
         <div class="ai" id="${aiId}">
-            ● ● ●
+            <div class="typing">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </div>
     `;
