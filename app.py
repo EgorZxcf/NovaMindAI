@@ -170,3 +170,16 @@ def service_worker():
         media_type="application/javascript"
     )
 
+
+@app.post("/clear_memory")
+def clear_memory():
+    global chat_memory
+
+    chat_memory = []
+
+    with open("memory.json", "w") as f:
+        json.dump([], f)
+
+    return {
+        "status": "ok"
+    }

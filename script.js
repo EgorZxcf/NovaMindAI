@@ -133,6 +133,9 @@ async function sendMessage(customText = null){
 
 
         saveChat();
+        speakText(
+            data.reply
+        );
 
         scrollBottom();
 
@@ -194,7 +197,25 @@ async function clearChat(){
 
     chat.innerHTML = "";
 
+    try{
+
+        await fetch(
+            "/clear_memory",
+            {
+                method:"POST"
+            }
+        );
+
+    }catch(error){
+
+        console.log(error);
+    }
+
     updateStats();
+
+    showToast(
+        "🧹 Память очищена"
+    );
 }
 
 function exportChat(){
@@ -691,6 +712,37 @@ window.addEventListener(
 function formatAI(text){
 
     return text
+
+    .replace(
+        /```([\s\S]*?)```/g,
+        "<pre><code>$1</code></pre>"
+    )
+
+    .replace(
+        /\*\*(.*?)\*\*/g,
+        "<b>$1</b>"
+    )
+
+    .replace(
+        /`([^`]+)`/g,
+        "<code>$1</code>"
+    )
+
+    .replace(
+        /^## (.*)$/gm,
+        "<h2>$1</h2>"
+    )
+
+    .replace(
+        /^# (.*)$/gm,
+        "<h1>$1</h1>"
+    )
+
+    .replace(
+        /^\- (.*)$/gm,
+        "• $1"
+    )
+
     .replace(
         /\n/g,
         "<br>"

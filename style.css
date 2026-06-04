@@ -348,3 +348,27 @@ code{
     opacity:.9;
 }
 
+
+pre{
+    background:#111827;
+    color:#e5e7eb;
+    padding:12px;
+    border-radius:12px;
+    overflow:auto;
+    margin:10px 0;
+    font-size:14px;
+}
+
+code{
+    font-family:monospace;
+}
+
+h1{
+    font-size:24px;
+    margin:10px 0;
+}
+
+h2{
+    font-size:20px;
+    margin:8px 0;
+}
