@@ -374,7 +374,6 @@ modelSelect.addEventListener(
             "novamind_model",
             this.value
         );
-        );
 
         const currentModel =
         document.getElementById(
