@@ -20,7 +20,21 @@ def style():
 @app.get("/script.js")
 def script():
     return FileResponse("script.js")
+@app.get("/manifest.json")
+def manifest():
+    return FileResponse("manifest.json")
 
+@app.get("/sw.js")
+def service_worker():
+    return FileResponse("sw.js")
+
+@app.get("/icon-192.png")
+def icon192():
+    return FileResponse("icon-192.png")
+
+@app.get("/icon-512.png")
+def icon512():
+    return FileResponse("icon-512.png")
 @app.post("/chat")
 async def chat(request: Request):
 
