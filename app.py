@@ -8,6 +8,7 @@ from fastapi.responses import FileResponse
 app = FastAPI()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY")
+chat_memory = []
 
 @app.get("/")
 def home():
@@ -45,6 +46,12 @@ async def chat(request: Request):
         "model",
         "openai/gpt-oss-20b"
     )
+    chat_memory.append({
+        "role": "user",
+        "content": message
+    })
+
+    chat_memory[:] = chat_memory[-20:]
 
     response = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
@@ -55,12 +62,7 @@ async def chat(request: Request):
         json={
             "model": model,
               "max_tokens": 1000,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": message
-                }
-            ]
+            "messages": chat_memory
         },
         timeout=120
     )
@@ -72,9 +74,17 @@ async def chat(request: Request):
             "reply": f"OpenRouter Error: {result}"
         }
 
+    ai_reply = result["choices"][0]["message"]["content"]
+
+    chat_memory.append({
+        "role": "assistant",
+        "content": ai_reply
+    })
+
+    chat_memory[:] = chat_memory[-20:]
+
     return {
-        "reply":
-        result["choices"][0]["message"]["content"]
+        "reply": ai_reply
     }
 
 @app.post("/analyze_image")
