@@ -11,7 +11,38 @@
 <div class="chat-container">
 
 <div class="header">
-NovaMind AI
+    NovaMind AI
+
+    <button onclick="toggleTheme()">Тема</button>
+
+    <button onclick="toggleSettings()">⚙</button>
+
+    <button onclick="searchChat()">Поиск</button>
+
+    <button onclick="regenerateResponse()">Повторить</button>
+
+    <button onclick="pinMessage()">📌</button>
+
+    <button onclick="exportChat()">TXT</button>
+
+    <button onclick="editLastMessage()">Изменить</button>
+
+    <button onclick="deleteLastMessage()">Удалить</button>
+
+    <button onclick="clearChat()">Очистить</button>
+</div>
+
+<select id="model">
+    <option value="openai/gpt-oss-20b">
+        GPT OSS 20B
+    </option>
+    <option value="google/gemini-2.5-flash">
+        Gemini 2.5 Flash
+    </option>
+</select>
+
+<div id="stats">
+Сообщений: 0
 </div>
 
 <div id="settingsPanel"></div>
@@ -31,7 +62,7 @@ accept="image/*"
 <input
 type="text"
 id="message"
-placeholder="Введите сообщение или вопрос по фото..."
+placeholder="Введите сообщение..."
 >
 
 <button onclick="sendMessage()">
