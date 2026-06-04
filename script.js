@@ -128,8 +128,8 @@ async function sendMessage(customText = null){
         document
         .getElementById(aiId)
         .innerHTML =
-        `<div class="ai-content">${data.reply}</div>
-        <button class="copy-btn" onclick="copyMessage(this)">📋</button>`; 
+        `<div class="ai-content">${formatAI(data.reply)}</div>
+        <button class="copy-btn" onclick="copyMessage(this)">📋</button>`;
 
 
         saveChat();
@@ -606,3 +606,34 @@ function showToast(text){
         2000
     );
 }
+
+window.addEventListener(
+    "scroll",
+    function(){
+
+        const btn =
+        document.getElementById(
+            "scrollBottomBtn"
+        );
+
+        if(
+            window.scrollY > 300
+        ){
+            btn.style.display =
+            "block";
+        }else{
+            btn.style.display =
+            "none";
+        }
+    }
+);
+
+function formatAI(text){
+
+    return text
+    .replace(
+        /\n/g,
+        "<br>"
+    );
+}
+

@@ -230,3 +230,39 @@ button{
     color:white;
     z-index:9999;
 }
+
+#settingsPanel{
+    margin:10px;
+    border-radius:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+
+#scrollBottomBtn{
+    position:fixed;
+    right:20px;
+    bottom:90px;
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    font-size:22px;
+    display:none;
+    z-index:999;
+}
+
+pre{
+    overflow:auto;
+    padding:12px;
+    border-radius:12px;
+    background:#0f172a;
+    color:#fff;
+}
+
+code{
+    font-family:monospace;
+}
+
+.ai-content{
+    white-space:pre-wrap;
+    word-break:break-word;
+}
+
