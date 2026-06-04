@@ -341,7 +341,6 @@ function startVoice(){
 
         sendMessage();
     };
-    };
 
     recognition.onerror =
     function(){
