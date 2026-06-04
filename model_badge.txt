@@ -1,0 +1,9 @@
+После строки:
+
+</select>
+
+добавить:
+
+<div id="currentModel">
+🤖 GPT OSS 20B
+</div>

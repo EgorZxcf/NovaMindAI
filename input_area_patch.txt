@@ -1,0 +1,27 @@
+Заменить:
+
+<button onclick="pickImage()">
+📎
+</button>
+
+<input
+type="text"
+id="message"
+placeholder="Введите сообщение..."
+>
+
+На:
+
+<button onclick="pickImage()">
+📎
+</button>
+
+<button onclick="startVoice()">
+🎤
+</button>
+
+<input
+type="text"
+id="message"
+placeholder="Введите сообщение..."
+>

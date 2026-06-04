@@ -118,3 +118,18 @@ async def analyze_image(
         "reply":
         result["choices"][0]["message"]["content"]
     }
+
+@app.get("/manifest.json")
+def manifest():
+    return FileResponse(
+        "manifest.json",
+        media_type="application/manifest+json"
+    )
+
+@app.get("/sw.js")
+def service_worker():
+    return FileResponse(
+        "sw.js",
+        media_type="application/javascript"
+    )
+

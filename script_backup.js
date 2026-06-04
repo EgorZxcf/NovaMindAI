@@ -302,54 +302,9 @@ function pickImage(){
 
 function startVoice(){
 
-    const SpeechRecognition =
-    window.SpeechRecognition ||
-    window.webkitSpeechRecognition;
-
-    if(!SpeechRecognition){
-
-        alert(
-            "Голосовой ввод не поддерживается"
-        );
-
-        return;
-    }
-
-    const recognition =
-    new SpeechRecognition();
-
-    recognition.lang =
-    "ru-RU";
-
-    recognition.interimResults =
-    false;
-
-    recognition.maxAlternatives =
-    1;
-
-    recognition.start();
-
-    recognition.onresult =
-    function(event){
-
-        document
-        .getElementById(
-            "message"
-        )
-        .value =
-        event.results[0][0].transcript;
-
-        sendMessage();
-    };
-    };
-
-    recognition.onerror =
-    function(){
-
-        alert(
-            "Ошибка распознавания"
-        );
-    };
+    alert(
+        "Голосовой ввод будет подключен позже"
+    );
 }
 
 const modelSelect =
@@ -375,23 +330,6 @@ modelSelect.addEventListener(
             "novamind_model",
             this.value
         );
-        );
-
-        const currentModel =
-        document.getElementById(
-            "currentModel"
-        );
-
-        if(currentModel){
-
-            currentModel.innerText =
-            this.value ===
-            "google/gemini-2.5-flash"
-            ?
-            "🟣 Gemini 2.5 Flash"
-            :
-            "🟢 GPT OSS 20B";
-        }
     }
 );
 
@@ -696,62 +634,6 @@ function formatAI(text){
     .replace(
         /\n/g,
         "<br>"
-    );
-}
-
-
-if(
-    "serviceWorker"
-    in navigator
-){
-    navigator
-    .serviceWorker
-    .register(
-        "/sw.js"
-    )
-    .then(
-        function(){
-
-            console.log(
-                "NovaMind PWA OK"
-            );
-        }
-    )
-    .catch(
-        function(error){
-
-            console.log(
-                error
-            );
-        }
-    );
-}
-
-
-if(
-    "serviceWorker"
-    in navigator
-){
-    navigator
-    .serviceWorker
-    .register(
-        "/sw.js"
-    )
-    .then(
-        function(){
-
-            console.log(
-                "NovaMind PWA OK"
-            );
-        }
-    )
-    .catch(
-        function(error){
-
-            console.log(
-                error
-            );
-        }
     );
 }
 
