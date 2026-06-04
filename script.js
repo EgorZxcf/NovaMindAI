@@ -138,10 +138,12 @@ async function sendMessage(customText = null){
 
     }catch(error){
 
+        console.log(error);
+
         document
         .getElementById(aiId)
         .innerHTML =
-        "Ошибка подключения";
+        "Ошибка: " + error;
     }
 }
 
