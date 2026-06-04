@@ -128,7 +128,9 @@ async function sendMessage(customText = null){
         document
         .getElementById(aiId)
         .innerHTML =
-        data.reply;
+        `<div class="ai-content">${data.reply}</div>
+        <button class="copy-btn" onclick="copyMessage(this)">📋</button>`; 
+
 
         saveChat();
 
@@ -561,3 +563,46 @@ function addImageToChat(file){
 }
 
 
+
+function copyMessage(button){
+
+    const text =
+    button.parentElement
+    .querySelector(
+        ".ai-content"
+    )
+    .innerText;
+
+    navigator.clipboard.writeText(
+        text
+    );
+
+    showToast(
+        "✅ Ответ скопирован"
+    );
+}
+
+function showToast(text){
+
+    const toast =
+    document.createElement(
+        "div"
+    );
+
+    toast.className =
+    "toast";
+
+    toast.innerText =
+    text;
+
+    document.body.appendChild(
+        toast
+    );
+
+    setTimeout(
+        function(){
+            toast.remove();
+        },
+        2000
+    );
+}
