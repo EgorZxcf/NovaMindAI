@@ -431,8 +431,10 @@ document
             return;
         }
 
-        addImageToChat(file);
-
+        await new Promise((resolve) => {
+            addImageToChat(file);
+            setTimeout(resolve, 300);
+        });
 
         const question =
         document
@@ -555,4 +557,3 @@ function addImageToChat(file){
 }
 
 
-addImageToChat(file);
