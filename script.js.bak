@@ -133,6 +133,9 @@ async function sendMessage(customText = null){
 
 
         saveChat();
+        speakText(
+            data.reply
+        );
 
         scrollBottom();
 
