@@ -745,6 +745,7 @@ function formatAI(text){
 
     .replace(
         /\n/g,
+
         "<br>"
     );
 }
@@ -805,3 +806,27 @@ if(
     );
 }
 
+
+function speakText(text){
+
+    if(!window.speechSynthesis){
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const speech =
+    new SpeechSynthesisUtterance(
+        text
+    );
+
+    speech.lang =
+    "ru-RU";
+
+    speech.rate =
+    1;
+
+    speechSynthesis.speak(
+        speech
+    );
+}
