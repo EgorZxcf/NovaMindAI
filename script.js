@@ -598,3 +598,42 @@ document
         scrollBottom();
     }
 );
+
+function addImageToChat(file){
+
+    const reader =
+    new FileReader();
+
+    reader.onload =
+    function(e){
+
+        chat.innerHTML += `
+        <div class="message">
+            <div class="avatar user-avatar">
+                📷
+            </div>
+            <div class="user">
+                <img
+                src="${e.target.result}"
+                style="
+                max-width:200px;
+                border-radius:12px;
+                margin-top:5px;
+                ">
+            </div>
+        </div>
+        `;
+
+        saveChat();
+
+        scrollBottom();
+    };
+
+    reader.readAsDataURL(
+        file
+    );
+}
+
+
+addImageToChat(file);
+
