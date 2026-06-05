@@ -829,3 +829,60 @@ function speakText(text){
         speech
     );
 }
+
+if("serviceWorker" in navigator){
+
+    navigator.serviceWorker.addEventListener(
+        "controllerchange",
+        function(){
+            location.reload();
+        }
+    );
+
+    navigator.serviceWorker.getRegistration()
+    .then(function(reg){
+
+        if(!reg){
+            return;
+        }
+
+        setInterval(
+            function(){
+                reg.update();
+            },
+            60000
+        );
+
+        reg.addEventListener(
+            "updatefound",
+            function(){
+
+                const newWorker =
+                reg.installing;
+
+                newWorker.addEventListener(
+                    "statechange",
+                    function(){
+
+                        if(
+                            newWorker.state === "installed" &&
+                            navigator.serviceWorker.controller
+                        ){
+
+                            showToast(
+                                "🔄 NovaMind обновлён"
+                            );
+
+                            newWorker.postMessage(
+                                {
+                                    action:"skipWaiting"
+                                }
+                            );
+                        }
+                    }
+                );
+            }
+        );
+    });
+}
+

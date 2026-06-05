@@ -1,4 +1,4 @@
-const CACHE_NAME = "novamind-v6";
+const CACHE_NAME = "novamind-v7";
 
 self.addEventListener(
     "install",
@@ -10,12 +10,18 @@ self.addEventListener(
 self.addEventListener(
     "activate",
     event => {
+
         event.waitUntil(
             caches.keys().then(keys =>
                 Promise.all(
                     keys.map(key => {
-                        if(key !== CACHE_NAME){
-                            return caches.delete(key);
+
+                        if(
+                            key !== CACHE_NAME
+                        ){
+                            return caches.delete(
+                                key
+                            );
                         }
                     })
                 )
@@ -27,12 +33,30 @@ self.addEventListener(
 );
 
 self.addEventListener(
+    "message",
+    event => {
+
+        if(
+            event.data &&
+            event.data.action ===
+            "skipWaiting"
+        ){
+            self.skipWaiting();
+        }
+    }
+);
+
+self.addEventListener(
     "fetch",
     event => {
+
         event.respondWith(
             fetch(event.request)
-            .catch(() =>
-                caches.match(event.request)
+            .catch(
+                () =>
+                caches.match(
+                    event.request
+                )
             )
         );
     }
