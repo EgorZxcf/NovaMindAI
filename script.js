@@ -886,3 +886,64 @@ if("serviceWorker" in navigator){
     });
 }
 
+
+function startVoiceInput(){
+
+    const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+    if(!SpeechRecognition){
+
+        showToast(
+            "❌ Голосовой ввод не поддерживается"
+        );
+
+        return;
+    }
+
+    const recognition =
+    new SpeechRecognition();
+
+    recognition.lang =
+    "ru-RU";
+
+    recognition.interimResults =
+    false;
+
+    recognition.maxAlternatives =
+    1;
+
+    showToast(
+        "🎤 Слушаю..."
+    );
+
+    recognition.start();
+
+    recognition.onresult =
+    function(event){
+
+        const text =
+        event.results[0][0]
+        .transcript;
+
+        document
+        .getElementById(
+            "message"
+        )
+        .value = text;
+
+        showToast(
+            "✅ Голос распознан"
+        );
+    };
+
+    recognition.onerror =
+    function(){
+
+        showToast(
+            "❌ Ошибка распознавания"
+        );
+    };
+}
+
